@@ -1,5 +1,6 @@
 package net.naji.ensetdemospringangular2.services;
 
+import net.naji.ensetdemospringangular2.dtos.NewPaymentDTO;
 import net.naji.ensetdemospringangular2.entities.Payment;
 import net.naji.ensetdemospringangular2.entities.PaymentStatus;
 import net.naji.ensetdemospringangular2.entities.PaymentType;
@@ -30,8 +31,7 @@ public class PaymentService {
         this.studentRepository = studentRepository;
         this.paymentRepository = paymentRepository;
     }
-    public Payment savePayment( MultipartFile file, LocalDate date, double amount,
-                               PaymentType type, String studentCode) throws IOException {
+    public Payment savePayment(MultipartFile file, NewPaymentDTO newPaymentDTO) throws IOException {
         Path folderPath = Paths.get(System.getProperty("user.home"),"enset-data","payments");
         if (!Files.exists(folderPath)){
             Files.createDirectories(folderPath);
@@ -39,10 +39,10 @@ public class PaymentService {
         String fileName = UUID.randomUUID().toString();
         Path filePath = Paths.get(System.getProperty("user.home"),"enset-data","payments",fileName+".pdf");
         Files.copy(file.getInputStream(),filePath);
-        Student student = studentRepository.findByCode(studentCode);
+        Student student = studentRepository.findByCode(newPaymentDTO.getStudentCode());
         Payment payment = Payment.builder()
-                .date(date).type(type).student(student)
-                .amount(amount)
+                .date(newPaymentDTO.getDate()).type(newPaymentDTO.getType()).student(student)
+                .amount(newPaymentDTO.getAmount())
                 .file(filePath.toUri().toString())
                 .status(PaymentStatus.CREATED)
                 .build();
@@ -56,5 +56,6 @@ public class PaymentService {
     public byte[] getPaymentFile( Long paymentId) throws IOException {
         Payment payment = paymentRepository.findById(paymentId).get();
         return Files.readAllBytes(Path.of(URI.create(payment.getFile())));
+
     }
 }

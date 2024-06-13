@@ -1,5 +1,6 @@
 package net.naji.ensetdemospringangular2.web;
 
+import net.naji.ensetdemospringangular2.dtos.NewPaymentDTO;
 import net.naji.ensetdemospringangular2.entities.Payment;
 import net.naji.ensetdemospringangular2.entities.PaymentStatus;
 import net.naji.ensetdemospringangular2.entities.PaymentType;
@@ -76,13 +77,14 @@ public class PaymentRestController {
    public Payment updatePaymentStatus(@RequestParam PaymentStatus status, @PathVariable Long id){
        return paymentService.updatePaymentStatus(status,id);
    }
-   @PostMapping(path = "/payments", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-   public Payment savePayment(@RequestParam MultipartFile file, LocalDate date, double amount,
-                              PaymentType type, String studentCode) throws IOException {
 
-       return this.paymentService.savePayment(file, date, amount, type, studentCode);
+   @PostMapping(path = "/payments", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+   public Payment savePayment(@RequestParam ("file") MultipartFile file, NewPaymentDTO newPaymentDTO) throws IOException {
+
+       return this.paymentService.savePayment(file, newPaymentDTO);
    }
-   @GetMapping(value = "/paymentFile/{paymentId}",produces =  MediaType.APPLICATION_PDF_VALUE)
+   @CrossOrigin
+   @GetMapping(value = "/payments/{paymentId}/file",produces =  MediaType.APPLICATION_PDF_VALUE)
    public byte[] getPaymentFile(@PathVariable Long paymentId) throws IOException {
         return paymentService.getPaymentFile(paymentId);
    }
