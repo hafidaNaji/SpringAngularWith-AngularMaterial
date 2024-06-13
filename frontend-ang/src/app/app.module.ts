@@ -30,6 +30,14 @@ import {HttpClientModule} from "@angular/common/http";
 import {MatTableModule} from "@angular/material/table";
 import {MatPaginator, MatPaginatorModule} from "@angular/material/paginator";
 import {MatSort, MatSortModule} from "@angular/material/sort";
+import { StudentDetailsComponent } from './student-details/student-details.component';
+import { NewPaymentComponent } from './new-payment/new-payment.component';
+import {MatDatepickerModule} from "@angular/material/datepicker";
+import {MatNativeDateModule} from "@angular/material/core";
+import {MatSelect, MatSelectModule} from "@angular/material/select";
+import {PdfViewerModule} from "ng2-pdf-viewer";
+import {MatProgressSpinner, MatProgressSpinnerModule} from "@angular/material/progress-spinner";
+import { PaymentDetailsComponent } from './payment-details/payment-details.component';
 
 @NgModule({
   declarations: [
@@ -43,6 +51,9 @@ import {MatSort, MatSortModule} from "@angular/material/sort";
     StudentsComponent,
     PaymentsComponent,
     DashboardComponent,
+    StudentDetailsComponent,
+    NewPaymentComponent,
+    PaymentDetailsComponent,
 
   ],
   imports: [
@@ -61,7 +72,9 @@ import {MatSort, MatSortModule} from "@angular/material/sort";
     HttpClientModule,
     MatTableModule,
     MatPaginatorModule,
-    MatSortModule
+    MatSortModule,
+    MatDatepickerModule, MatNativeDateModule, MatSelectModule,
+    PdfViewerModule, MatProgressSpinnerModule
   ],
   providers: [
     provideAnimationsAsync(), AuthGuard, AuthorizationGuard
